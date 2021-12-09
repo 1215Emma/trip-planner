@@ -1,0 +1,195 @@
+.loginContainer {
+  background-color: #f1ebb7;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.loginContent {
+  margin-top: 2%;
+  width: 45%;
+}
+
+.title a,
+.title span {
+  color: #128b7a;
+  text-decoration: none;
+}
+
+.title a:nth-child(2),
+.title span:nth-child(2) {
+  color: #f9b341;
+  text-decoration: none;
+  -webkit-text-stroke: 1px #128b7a;
+}
+
+
+.title a:hover,
+.title a:focus,
+.title a:active {
+  text-decoration: underline;
+}
+
+.title {
+  margin: 0;
+  line-height: 1.15;
+  font-size: 4rem;
+}
+
+.title,
+.description {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.description {
+  margin: 0;
+  line-height: 1.5;
+  font-size: 1.3rem;
+}
+
+.contentCards {
+  margin-top: 3rem;
+}
+
+.contentCards ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  list-style: none;
+  text-align: center;
+}
+
+.contentCards li {
+  border: black solid 1px;
+  border-radius: 15px;
+  width: 30%;
+  height: 25rem;
+}
+.loginImg {
+  position: relative;
+  /* right: 2rem; */
+  height: auto;
+  width: 100%;
+  box-shadow:
+  0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+  0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+  0 12.5px 10px rgba(0, 0, 0, 0.06),
+  0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+  0 41.8px 33.4px rgba(0, 0, 0, 0.086)
+}
+
+.loginButtonClosed {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin-right: 5rem;
+  margin-top: 2rem;
+  background: none;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-style: none;
+  border: black solid 1px;
+  border-radius: 10px;
+  height: 2rem;
+  width: 8rem;
+  font-size: 20px;
+}
+.formContainer {
+  position: absolute;
+  top: 4.1%;
+  bottom: 4.1%;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 80%;
+  width: 18rem;
+  min-width: 18rem;
+  background-color: rgba(183, 189, 241, 0.9);
+  box-shadow:
+  0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+  0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+  0 12.5px 10px rgba(0, 0, 0, 0.06),
+  0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+  0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+  0 100px 80px rgba(0, 0, 0, 0.12)
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  width: 100%;
+}
+
+.form label {
+  align-self: flex-start;
+  margin-left: 11%;
+  font-size: 13px;
+}
+
+.form input {
+  height: 2.5rem;
+  width: 80%;
+  border-radius: 3px;
+  margin-bottom: 0.5rem;
+  margin-top: 0.25rem;
+  padding-left: 1rem;
+  border-style: none;
+  font-family: 'Rubik', sans-serif;
+}
+
+.form button {
+  height: 3rem;
+  width: 70%;
+  border-radius: 3px;
+  margin-top: 1rem;
+  border-style: none;
+  border: black solid 1px;
+  background-color: rgba(241, 235, 183, 1);
+  font-family: 'Rubik', sans-serif;
+  font-size: 1rem;
+}
+
+.form::after {
+  content: "or";
+  position: absolute;
+  background-color: #b7bdf1;
+  width: 3rem;
+  margin-bottom: -2.5rem;
+  text-align: center;
+}
+
+.signInWithGoogle {
+  height: 6rem;
+  width: 75%;
+  margin-bottom: 1.5rem;
+  padding-top: 2rem;
+  margin-top: 2rem;
+  border-top: 1px solid black;
+}
+
+.signInWithGoogle button {
+  display: flex;
+  height: 75%;
+  width: 80%;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 3px;
+  border-style: none;
+  border: black solid 1px;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.signInWithGoogle button p {
+  font-size: 1rem;
+  font-family: 'Rubik', sans-serif;
+  margin-left: 1rem;
+}

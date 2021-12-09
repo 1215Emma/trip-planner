@@ -1,0 +1,36 @@
+.nav {
+  position: absolute;
+  z-index: 2;
+  height: 50px;
+  width: 100vw;
+  padding: 10px;
+  background: rgb(36, 36, 36);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.nav ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+}
+
+.nav ul li a {
+  margin: 5px 15px;
+}
+
+.title a,
+.title span {
+  color: #128b7a;
+  text-decoration: none;
+}
+
+.title a:nth-child(2),
+.title span:nth-child(2) {
+  color: #f9b341;
+  text-decoration: none;
+  -webkit-text-stroke: 0.25px #128b7a;
+}
