@@ -11,7 +11,7 @@ import {
   FieldProps,
   validateYupSchema,
 } from "formik";
-import { useFirebaseAuth } from '../auth/AuthProvider'
+import { useFirebaseAuth } from '../../auth/AuthProvider'
 
 interface Props {
   radiusFormData: RadiusData;

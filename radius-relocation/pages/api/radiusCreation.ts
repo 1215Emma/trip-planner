@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { firebase } from "../../firebase/firebase";
-import { getFirestore, doc, setDoc } from "firebase/firestore";
+import { getFirestore, doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
+
+// API that handles storing new Radius information into Firestore
 const radiusCreation = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (req.method === "POST") {
@@ -14,6 +15,8 @@ const radiusCreation = async (req: NextApiRequest, res: NextApiResponse) => {
     const priceRangeLow: string = req.body.priceRangeLow;
     const sqft: string = req.body.sqft;
     const notes: string = req.body.notes;
+
+    // API call to get latitude and longitude of an address
     const response = await fetch(
       `http://www.mapquestapi.com/geocoding/v1/address?key=${process.env.NEXT_PUBLIC_MAPQUEST_API_KEY}&street=${street}&city=${city}&state=${state}&postalCode=${zip}
 `
@@ -47,14 +50,14 @@ const radiusCreation = async (req: NextApiRequest, res: NextApiResponse) => {
         sqft: sqft,
         notes: notes,
       };
-      console.log(RadiusData, "RADIUSDATA")
-
+      // Firestore database access
       const db = getFirestore();
-      await setDoc(doc(db, "users", `${radiusCreatorUid}`), {
-        RadiusData
+      
+      await updateDoc(doc(db, "users", `${radiusCreatorUid}`), {
+        radiusProfiles: arrayUnion(RadiusData)
       })
       // const userRef = doc(db, "users", `${radiusCreatorUid}`);
-      // await setDoc(userRef, RadiusData, { merge: true });
+      // await setDoc(userRef, {capital: true}, { merge: true });
     } else {
       console.log("CLEARLY NO USER")
     }

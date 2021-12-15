@@ -5,10 +5,11 @@ import {
   FaRegArrowAltCircleRight,
   FaRegArrowAltCircleLeft,
 } from "react-icons/fa";
-import CreateRadiusStep1 from "./CreateRadiusStep1";
-import CreateRadiusStep2 from "./CreateRadiusStep2";
-import CreateRadiusStep3 from "./CreateRadiusStep3";
+import CreateRadiusName from "../createRadiusForm/CreateRadiusName";
+import CreateRadiusAddress from "../createRadiusForm/CreateRadiusAddress";
+import CreateRadiusOther from "../createRadiusForm/CreateRadiusOther";
 
+// Data structure for Radius profiles
 export interface RadiusData {
   radiusCreatorUid: string,
   radiusName: string;
@@ -46,42 +47,45 @@ const radiusData: RadiusData = {
   lng: 0,
   newRadius: false
 };
+
+// Title/Header for each section of multi-Step form
+const formTitles: string[] = [
+  "Give your Radius a name",
+  "Provide the address and link to the listing",
+  "Share other details about this home",
+];
+
 const CreateRadius: React.FC = ({
 }) => {
   const [page, setPage] = useState<number>(0);
   const [radiusFormData, setRadiusFormData] = useState<RadiusData>(radiusData);
-  
-  const formTitles: string[] = [
-    "Give your Radius a name",
-    "Provide the address and link to the listing",
-    "Share other details about this home",
-  ];
-
+  // Handles displaying which form page to render
   const PageDisplay = () => {
     if (page === 0) {
       return (
-        <CreateRadiusStep1
+        <CreateRadiusName
           setRadiusFormData={setRadiusFormData}
           radiusFormData={radiusFormData}
         />
       );
     } else if (page === 1) {
       return (
-        <CreateRadiusStep2
+        <CreateRadiusAddress
           setRadiusFormData={setRadiusFormData}
           radiusFormData={radiusFormData}
         />
       );
     } else if (page === 2) {
       return (
-        <CreateRadiusStep3
+        <CreateRadiusOther
           setRadiusFormData={setRadiusFormData}
           radiusFormData={radiusFormData}
         />
       );
     }
   };
-  console.log(radiusFormData, "RFD")
+
+  // Handles the functionality and UI for moving to the next step of the multi-step form
   const NavNext = () => {
     if (page === 1) {
       return (
@@ -109,6 +113,7 @@ const CreateRadius: React.FC = ({
       );
     }
   };
+  
   return (
     <AnimatePresence initial={false} exitBeforeEnter={true}>
       <motion.div

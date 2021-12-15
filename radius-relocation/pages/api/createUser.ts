@@ -13,8 +13,11 @@ const addUser = async (req: NextApiRequest, res: NextApiResponse) => {
   const db = getFirestore();
 
   await setDoc(doc(db, "users", `${uid}`), {
-    email: email,
-    name: name
+    userInfo: {
+      email: email,
+      name: name
+    },
+    radiusProfiles: []
 })
 };
 

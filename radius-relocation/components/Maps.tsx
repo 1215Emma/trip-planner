@@ -20,33 +20,45 @@ import mapStyles from "../styles/mapStyles";
 //   ComboboxOption,
 // } from "@reach/combobox";
 import "@reach/combobox/styles.css";
-import { number, string } from "yup/lib/locale";
 
+
+// Styling for Google Maps container
 interface MapProps {
   width: string;
   height: string;
 }
+
+const mapContainerStyle: MapProps = {
+  width: "100%",
+  height: "100vh",
+};
+
+// Where the map starts on initialization, eventually change this to geocode the users current location or preferred location.
+
 interface CoordinateProps {
   lat: number;
   lng: number;
 }
 
-const libraries: any = ["places"];
-const googleMapsApiKey: any =
-  process.env.NEXT_PUBLIC_REACT_APP_GOOGLE_MAPS_API_KEY;
-const mapContainerStyle: MapProps = {
-  width: "100%",
-  height: "100vh",
-};
 const center: CoordinateProps = {
   lat: 47.605,
   lng: -122.3344,
 };
+
+const libraries: any = ["places"];
+
+// API Key to allow access to Google Maps
+const googleMapsApiKey: any =
+  process.env.NEXT_PUBLIC_REACT_APP_GOOGLE_MAPS_API_KEY;
+
+// styling and functionality for Google Maps
 const options = {
   styles: mapStyles,
   disableDefaultUI: true,
   zoomControl: true,
 };
+
+// Click on map, places marker with timestamp
 interface Markers {
   RadiusProfiles: {
     lat: number;
@@ -54,26 +66,34 @@ interface Markers {
     time: Date;
   }[];
 }
-const LoadingMessages: LoadingMessagesTypes = {
-  isLoadError: "Error Loading Maps",
-  isLoadedFalse: "Loading Maps",
-};
+
+// Google Maps API initialization 
+
 type LoadingMessagesTypes = {
   isLoadError: string;
   isLoadedFalse: string;
 };
 
+const LoadingMessages: LoadingMessagesTypes = {
+  isLoadError: "Error Loading Maps",
+  isLoadedFalse: "Loading Maps",
+};
+
 const Maps: React.FC = () => {
+  const [markers, setMarkers] = useState<Markers["RadiusProfiles"]>([]);
+  const [input, setInput] = useState({ address: "" });
+  
+  // Initializes loading functionality for Google Maps
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey,
     libraries,
   });
-  const [markers, setMarkers] = useState<Markers["RadiusProfiles"]>([]);
-  const [input, setInput] = useState({ address: "" });
-
+  // If user cant load Google Maps
   if (loadError) return <>{LoadingMessages.isLoadError}</>;
+  // If  user can load  Google Maps, but the map hasn't loaded yet
   if (!isLoaded) return <>{LoadingMessages.isLoadedFalse}</>;
 
+  // Handles when a user clicks on the map to drop a marker
   const handleClick = (event: google.maps.MapMouseEvent) => {
     setMarkers([
       {
@@ -83,6 +103,8 @@ const Maps: React.FC = () => {
       },
     ]);
   };
+
+  // Will eventually be for searching a desired location
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput({
       ...input,
