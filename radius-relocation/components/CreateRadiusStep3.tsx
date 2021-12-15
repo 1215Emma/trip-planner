@@ -2,6 +2,18 @@ import React from "react";
 import { RadiusData } from "./CreateRadius";
 import Step3Styles from "../styles/CreateRadiusStep3.module.css";
 import { GoDash } from "react-icons/go";
+import {
+  Formik,
+  FormikHelpers,
+  FormikProps,
+  Form,
+  Field,
+  FieldProps,
+  validateYupSchema,
+} from "formik";
+import { getFirestore, collection, getDocs, addDoc, doc, setDoc, Timestamp } from 'firebase/firestore'
+import { firebase } from "../firebase/firebase";
+
 interface Props {
   radiusFormData: RadiusData;
   setRadiusFormData: React.Dispatch<React.SetStateAction<RadiusData>>;
@@ -10,39 +22,308 @@ const CreateRadiusStep2: React.FC<Props> = ({
   setRadiusFormData,
   radiusFormData,
 }) => {
+  const user = firebase.auth().currentUser;
+
+  const addRadiusProfile = async () => {
+    if (user !== null) {
+      setRadiusFormData({
+        ...radiusFormData,
+        newRadius: false,
+        radiusCreatorUid: user.uid
+      });
+    }
+  }
+  const initialValues = radiusFormData;
+  async function geocode(
+      radiusCreatorUid: string,
+      creationTime: number,
+      radiusName: string,
+      street: string,
+      city: string,
+      state: string,
+      zip: string,
+      priceRangeHigh: number,
+      priceRangeLow: number,
+      sqft: number | string,
+      notes?: string
+    ) {
+      const response = await fetch("/api/radiusCreation", {
+        method: "POST",
+        body: JSON.stringify({
+          radiusCreatorUid,
+          creationTime,
+          radiusName,
+          street,
+          city,
+          state,
+          zip,
+          priceRangeHigh,
+          priceRangeLow,
+          sqft,
+          notes
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      });
+      const data = await response.json();
+      setRadiusFormData({
+        ...radiusFormData,
+        street: data.addressData.street,
+        city: data.addressData.city,
+        state: data.addressData.state,
+        zip: data.addressData.zip,
+        lat: data.addressData.lat,
+        lng: data.addressData.lng,
+        priceRangeHigh: Number(priceRangeHigh),
+        priceRangeLow: Number(priceRangeLow),
+        sqft: Number(sqft),
+        notes: notes,
+        newRadius: true,
+      });
+      if (radiusFormData.newRadius) {
+        addRadiusProfile()
+      }
+  }
+
   return (
-    <form className={Step3Styles.form}>
-      <div className={Step3Styles.priceRangeLabel}>
-        <label>Price</label>
-        <div className={Step3Styles.priceRange}>
-          <input
-            className={Step3Styles.input}
-            type="text"
-            placeholder="Min"
-            value={radiusFormData.priceRangeLow}
-            onChange={(event) =>
-              setRadiusFormData({
-                ...radiusFormData,
-                priceRangeLow: event.target.value,
-              })
-            }
-          />
-          <GoDash style={{ fontSize: "32px", marginTop: "1rem", marginLeft: "0.25rem", marginRight: "0.25rem"}}/>
-          <input
-            className={Step3Styles.input}
-            type="text"
-            placeholder="Max"
-            value={radiusFormData.priceRangeHigh}
-            onChange={(event) =>
-              setRadiusFormData({
-                ...radiusFormData,
-                priceRangeHigh: event.target.value,
-              })
-            }
-          />
+    <div className={Step3Styles.content}>
+      <div className={Step3Styles.contentLeft}>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={(values, actions) => {
+            let newStreet = values.street.replaceAll(" ", "+");
+            let creationTime = Date.now()
+            geocode(
+              values.radiusCreatorUid,
+              creationTime,
+              values.radiusName,
+              newStreet,
+              values.city,
+              values.state,
+              values.zip,
+              values.priceRangeHigh,
+              values.priceRangeLow,
+              values.sqft,
+              values.notes,
+            );
+            actions.setSubmitting(false);
+          }}
+        >
+          <Form className={Step3Styles.form}>
+            <div className={Step3Styles.priceAndSqft}>
+              <div className={Step3Styles.priceRangeLabel}>
+                <label>Price</label>
+                <div className={Step3Styles.priceRange}>
+                  <Field
+                    className={Step3Styles.input}
+                    id="priceRangeLow"
+                    name="priceRangeLow"
+                    placeholder="Min"
+                  />
+                  <GoDash
+                    style={{
+                      fontSize: "32px",
+                      marginTop: "0.5rem",
+                      marginLeft: "0.25rem",
+                      marginRight: "0.25rem",
+                    }}
+                  />
+                  <Field
+                    className={Step3Styles.input}
+                    id="priceRangeHigh"
+                    name="priceRangeHigh"
+                    placeholder="Max"
+                  />
+                </div>
+              </div>
+              <div className={Step3Styles.sqft}>
+                <label htmlFor="sqft">Square Feet</label>
+                <Field
+                  className={Step3Styles.input}
+                  id="sqft"
+                  name="sqft"
+                  placeholder="sqft"
+                />
+              </div>
+            </div>
+            <div className={Step3Styles.comments}>
+              <label>Notes</label>
+              <Field
+                component="textarea"
+                id="notes"
+                name="notes"
+                className={Step3Styles.commentsBox}
+                rows={10}
+                cols={50}
+                placeholder="add any comments"
+              />
+            </div>
+            <button className={Step3Styles.submitForm} type="submit">
+              Create Radius
+            </button>
+          </Form>
+        </Formik>
+        <div className={Step3Styles.homeData}>
+          <label>Bedrooms</label>
+          <div className={Step3Styles.homeRadio}>
+            <button
+              style={{
+                border: radiusFormData.bed === 0 ? "#128b7a solid 4px" : "",
+              }}
+              className={Step3Styles.homeButtons}
+              type="button"
+              onClick={() =>
+                setRadiusFormData({
+                  ...radiusFormData,
+                  bed: 0,
+                })
+              }
+            >
+              Studio
+            </button>
+            <button
+              style={{
+                border: radiusFormData.bed === 1 ? "#128b7a solid 4px" : "",
+              }}
+              className={Step3Styles.homeButtons}
+              type="button"
+              onClick={() =>
+                setRadiusFormData({
+                  ...radiusFormData,
+                  bed: 1,
+                })
+              }
+            >
+              1
+            </button>
+            <button
+              style={{
+                border: radiusFormData.bed === 2 ? "#128b7a solid 4px" : "",
+              }}
+              className={Step3Styles.homeButtons}
+              type="button"
+              onClick={() =>
+                setRadiusFormData({
+                  ...radiusFormData,
+                  bed: 2,
+                })
+              }
+            >
+              2
+            </button>
+            <button
+              style={{
+                border: radiusFormData.bed === 3 ? "#128b7a solid 4px" : "",
+              }}
+              className={Step3Styles.homeButtons}
+              type="button"
+              onClick={() =>
+                setRadiusFormData({
+                  ...radiusFormData,
+                  bed: 3,
+                })
+              }
+            >
+              3
+            </button>
+            <button
+              style={{
+                border: radiusFormData.bed === 4 ? "#128b7a solid 4px" : "",
+              }}
+              className={Step3Styles.homeButtons5}
+              type="button"
+              onClick={() =>
+                setRadiusFormData({
+                  ...radiusFormData,
+                  bed: 4,
+                })
+              }
+            >
+              4+
+            </button>
+          </div>
+          <label>Bathrooms</label>
+          <div className={Step3Styles.homeRadio}>
+            <button
+              style={{
+                border: radiusFormData.bath === 1 ? "#128b7a solid 4px" : "",
+              }}
+              className={Step3Styles.homeButtons}
+              type="button"
+              onClick={() =>
+                setRadiusFormData({
+                  ...radiusFormData,
+                  bath: 1,
+                })
+              }
+            >
+              1
+            </button>
+            <button
+              style={{
+                border: radiusFormData.bath === 1.5 ? "#128b7a solid 4px" : "",
+              }}
+              className={Step3Styles.homeButtons}
+              type="button"
+              onClick={() =>
+                setRadiusFormData({
+                  ...radiusFormData,
+                  bath: 1.5,
+                })
+              }
+            >
+              1.5
+            </button>
+            <button
+              style={{
+                border: radiusFormData.bath === 2 ? "#128b7a solid 4px" : "",
+              }}
+              className={Step3Styles.homeButtons}
+              type="button"
+              onClick={() =>
+                setRadiusFormData({
+                  ...radiusFormData,
+                  bath: 2,
+                })
+              }
+            >
+              2
+            </button>
+            <button
+              style={{
+                border: radiusFormData.bath === 2.5 ? "#128b7a solid 4px" : "",
+              }}
+              className={Step3Styles.homeButtons}
+              type="button"
+              onClick={() =>
+                setRadiusFormData({
+                  ...radiusFormData,
+                  bath: 2.5,
+                })
+              }
+            >
+              2.5
+            </button>
+            <button
+              style={{
+                border: radiusFormData.bath === 3 ? "#128b7a solid 4px" : "",
+              }}
+              className={Step3Styles.homeButtons5}
+              type="button"
+              onClick={() =>
+                setRadiusFormData({
+                  ...radiusFormData,
+                  bath: 3,
+                })
+              }
+            >
+              3+
+            </button>
+          </div>
         </div>
       </div>
-    </form>
+    </div>
   );
 };
 

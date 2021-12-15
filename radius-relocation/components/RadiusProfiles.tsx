@@ -2,7 +2,7 @@ import react, { useState } from "react";
 import Image from "next/image";
 import RadiusProfilesStyles from "../styles/RadiusProfiles.module.css";
 import loftPlaceholder from '../public/images/loft-placeholder.jpg'
-import { FiPlus } from 'react-icons/fi'
+import { FiPlus, FiMinus } from 'react-icons/fi'
 import { motion } from 'framer-motion'
 interface Props {
   isCreateRadiusOpen: boolean;
@@ -17,13 +17,21 @@ const RadiusProfiles: React.FC<Props> = ({isCreateRadiusOpen, setIsCreateRadiusO
     <div className={RadiusProfilesStyles.RadiusSideNav}>
       <motion.button
         className={RadiusProfilesStyles.CreateRadiusButton}
+        style={{ backgroundColor: isCreateRadiusOpen ? "#9c8090" : "" }}
         whileHover={{ scale: 1.015, transition: { duration: 0.25 } }}
         whileTap={{ scale: 0.975 }}
         onClick={() => {
           setIsCreateRadiusOpen(!isCreateRadiusOpen);
         }}
       >
-        <FiPlus style={{ fontSize: "24px" }} /> <p>Add Radius Profile</p>
+        {isCreateRadiusOpen ? (
+          <FiMinus style={{ fontSize: "24px" }} />
+        ) : (
+          <FiPlus style={{ fontSize: "24px" }} />
+        )}
+        <p style={{ color: isCreateRadiusOpen ? "white" : "" }}>
+          Add Radius Profile
+        </p>
       </motion.button>
       <div className={RadiusProfilesStyles.RadiusProfilesContainer}>
         <motion.button

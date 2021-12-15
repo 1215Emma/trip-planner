@@ -20,12 +20,13 @@ export default async function handler(
 
     const textResponse = await response.text();
     const textStartIndex = textResponse.indexOf(
-      "510 S",
-      textResponse.indexOf("510 S") + 1
+      "213 N",
+      textResponse.indexOf("213 N") + 1
     );
     const text = textResponse.substring(textStartIndex, textStartIndex + 156);
     const textEndIndex = text.search(/[<]/);
     const description = text.substring(0, textEndIndex);
+    console.log(text)
     res.status(200).json({ textResponse });
   }
 }

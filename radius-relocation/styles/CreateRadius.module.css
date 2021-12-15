@@ -2,10 +2,12 @@
   margin-top: 50px;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 .innerFormContainer {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  margin-left: 12rem;
 }
 .formContainer h1 {
   margin-left: 100px; 
@@ -15,18 +17,18 @@
   font-size: 48px;
 }
 
-.formContainer button {
-  border-style: none;
-  background: none;
-}
 .navigationButtonLeft {
   position: absolute;
+  border-style: none;
+  background: none;
   left: 0;
   margin-left: 3rem;
   top: 27rem;
 }
 .navigationButtonRight {
   position: absolute;
+  border-style: none;
+  background: none;
   right: 0;
   margin-right: 3rem;
   top: 27rem;

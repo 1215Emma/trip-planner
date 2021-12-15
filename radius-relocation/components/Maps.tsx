@@ -34,7 +34,6 @@ interface CoordinateProps {
 const libraries: any = ["places"];
 const googleMapsApiKey: any =
   process.env.NEXT_PUBLIC_REACT_APP_GOOGLE_MAPS_API_KEY;
-console.log(googleMapsApiKey);
 const mapContainerStyle: MapProps = {
   width: "100%",
   height: "100vh",

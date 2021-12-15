@@ -1,5 +1,8 @@
 import navigationStyles from '../styles/Navigation.module.css'
 import Link from 'next/link'
+import User  from './User'
+
+
 const Navigation: React.FC = () => {
   return (
     <nav className={navigationStyles.nav}>
@@ -14,6 +17,7 @@ const Navigation: React.FC = () => {
           <Link href="/radius">Explore</Link>
         </li>
       </ul>
+        <User /> 
     </nav>
   );
 }

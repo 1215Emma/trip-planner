@@ -2,25 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../styles/globals.css";
 import Layout from "../components/Layout";
 import type { AppProps } from "next/app";
-import cheerio from "cheerio";
-import axios from "axios";
-import { GetServerSideProps } from "next";
 
-interface Props {
-  Component: any;
-  pageProps: any;
-  photo: any;
-}
-function MyApp({ Component, pageProps, photo }: Props) {
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("/api");
-      const data = await response.json();
-      console.log(data);
-    };
-    fetchData();
-  });
-
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Layout>
       <Component {...pageProps} />

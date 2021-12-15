@@ -9,37 +9,58 @@ import CreateRadiusStep1 from "./CreateRadiusStep1";
 import CreateRadiusStep2 from "./CreateRadiusStep2";
 import CreateRadiusStep3 from "./CreateRadiusStep3";
 import useSWR from 'swr'
+import { firebase } from '../firebase/firebase'
 
-interface Props {
-  isCreateRadiusOpen: boolean;
-  setIsCreateRadiusOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
+// interface Props {
+//   isCreateRadiusOpen: boolean;
+//   setIsCreateRadiusOpen: React.Dispatch<React.SetStateAction<boolean>>;
+// }
 
 export interface RadiusData {
+  radiusCreatorUid: string,
   radiusName: string;
-  address: string;
-  priceRangeLow: string;
-  priceRangeHigh: string;
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  priceRangeLow: number;
+  priceRangeHigh: number;
+  bed: number;
+  bath: number;
+  sqft: number | string;
+  notes?: string;
   externalUrl: string;
+  lat: number;
+  lng: number;
+  newRadius: boolean;
 }
 
-const radiusData = {
+const radiusData: RadiusData = {
+  radiusCreatorUid: "",
   radiusName: "",
-  address: "",
-  priceRangeLow: "",
-  priceRangeHigh: "",
+  street: "",
+  city: "",
+  state: "",
+  zip: "",
+  priceRangeLow: 0,
+  priceRangeHigh: 0,
+  bed: 0,
+  bath: 0,
+  sqft: 0,
+  notes: "",
   externalUrl: "",
+  lat: 0,
+  lng: 0,
+  newRadius: false
 };
-const CreateRadius: React.FC<Props> = ({
-  isCreateRadiusOpen,
-  setIsCreateRadiusOpen,
+const CreateRadius: React.FC = ({
 }) => {
   const [page, setPage] = useState<number>(0);
   const [radiusFormData, setRadiusFormData] = useState<RadiusData>(radiusData);
-  const [isUrlProvided, setIsUrlProvided] = useState<boolean>(false);
+  
   const formTitles: string[] = [
     "Give your Radius a name",
-    "Paste the link to the house listing",
+    "Provide the address and link to the listing",
     "Share other details about this home",
   ];
 
@@ -68,25 +89,6 @@ const CreateRadius: React.FC<Props> = ({
     }
   };
   console.log(radiusFormData, "RFD")
-  async function fetchUrlData(url: string) {
-    const response = await fetch('/api', {
-      method: 'POST',
-      body: JSON.stringify({
-        url
-      }),
-      headers: {
-        'Content-type': 'application/json'
-      }
-    })
-    console.log(JSON.stringify({url}), "asdsa")
-    const data = await response.json()
-    console.log(data)
-    // }).then(res => {
-    //   console.log(res)
-    // })
-    // const { urlData } = await response.json()
-    // console.log(urlData)
-  }
   const NavNext = () => {
     if (page === 1) {
       return (
@@ -94,7 +96,7 @@ const CreateRadius: React.FC<Props> = ({
           className={CreateRadiusStyles.navigationButtonRight}
           disabled={page == formTitles.length - 1}
           onClick={() => {
-            setPage((currPage) => currPage + 1), fetchUrlData(radiusFormData.externalUrl);
+            setPage((currPage) => currPage + 1);
           }}
         >
           <FaRegArrowAltCircleRight style={{ fontSize: "48px" }} />
