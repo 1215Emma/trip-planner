@@ -3,27 +3,30 @@ import { firebase } from '../firebase/firebase'
 
 // User is a type alias for the authenticated Firebase user returned by onAuthStateChanged. The callback is called with null if no user is authenticated.
 type IsLoggedIn = boolean | string;
+type User = firebase.User | null
 // ContextState is a type alias for the value provided by our context FirebaseAuthContext
-type ContextState = { isLoggedIn: IsLoggedIn };
+type IsLoggedInContext = { isLoggedIn: IsLoggedIn, user: User };
+
 // We do not expose FirebaseAuthContext directly. Instead we expose FirebaseAuthProvider which encapsulates FirebaseAuthContext.Provider and a onAuthStateChanged subscription.
-const FirebaseAuthContext = React.createContext<ContextState | undefined>(
+const FirebaseAuthContext = React.createContext<IsLoggedInContext | undefined>(
   undefined
 );
 
 const FirebaseAuthProvider: React.FC = ({ children }) => {
-  // const [user, setUser] = React.useState<User>(null);
+  const [user, setUser] = React.useState<User>(null);
   const [isLoggedIn, setIsLoggedIn] = React.useState<boolean | string>("unknown")
-  const value = { isLoggedIn };
 
   React.useEffect(() => {
     console.log("state = unknown")
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
       if (user) {
+        const userCredentials = firebase.auth().currentUser;
         console.log("state = signed in")
         setIsLoggedIn(true)
+        setUser(userCredentials)
       } 
       else {
-        console.log("state = signed  out")
+        console.log("state = signed out")
         setIsLoggedIn(false)
       }
       }); 
@@ -31,9 +34,11 @@ const FirebaseAuthProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <FirebaseAuthContext.Provider value={value}>
+    // <FirebaseUserContext.Provider value={userCredentials}>
+    <FirebaseAuthContext.Provider value={{isLoggedIn, user}}>
       {children}
     </FirebaseAuthContext.Provider>
+    // </FirebaseUserContext.Provider>
   );
 };
 
@@ -45,6 +50,10 @@ function useFirebaseAuth() {
       "useFirebaseAuth must be used within a FirebaseAuthProvider"
     );
   }
-  return context.isLoggedIn;
+  const isLoggedIn = context.isLoggedIn
+  const user = context.user
+  console.log(user, "UZZ")
+  return {isLoggedIn, user}
 }
+
 export { FirebaseAuthProvider, useFirebaseAuth };

@@ -8,13 +8,6 @@ import {
 import CreateRadiusStep1 from "./CreateRadiusStep1";
 import CreateRadiusStep2 from "./CreateRadiusStep2";
 import CreateRadiusStep3 from "./CreateRadiusStep3";
-import useSWR from 'swr'
-import { firebase } from '../firebase/firebase'
-
-// interface Props {
-//   isCreateRadiusOpen: boolean;
-//   setIsCreateRadiusOpen: React.Dispatch<React.SetStateAction<boolean>>;
-// }
 
 export interface RadiusData {
   radiusCreatorUid: string,

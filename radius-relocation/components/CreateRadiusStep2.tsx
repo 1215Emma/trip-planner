@@ -1,7 +1,7 @@
 import React from "react";
 import { RadiusData } from "./CreateRadius";
 import Step2Styles from "../styles/CreateRadiusStep2.module.css";
-import { firebase } from '../firebase/firebase'
+
 interface Props {
   radiusFormData: RadiusData;
   setRadiusFormData: React.Dispatch<React.SetStateAction<RadiusData>>;

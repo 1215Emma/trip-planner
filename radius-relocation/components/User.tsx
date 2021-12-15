@@ -10,8 +10,8 @@ import userStyles from "../styles/User.module.css";
 
 const User: React.FC = () => {
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
-
   const user = firebase.auth().currentUser;
+
   const isLoggedIn = useFirebaseAuth();
   console.log(isLoggedIn, "isLoggedIn");
   

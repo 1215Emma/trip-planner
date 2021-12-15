@@ -11,32 +11,21 @@ import {
   FieldProps,
   validateYupSchema,
 } from "formik";
-import { getFirestore, collection, getDocs, addDoc, doc, setDoc, Timestamp } from 'firebase/firestore'
-import { firebase } from "../firebase/firebase";
+import { useFirebaseAuth } from '../auth/AuthProvider'
 
 interface Props {
   radiusFormData: RadiusData;
   setRadiusFormData: React.Dispatch<React.SetStateAction<RadiusData>>;
 }
-const CreateRadiusStep2: React.FC<Props> = ({
+const CreateRadiusStep3: React.FC<Props> = ({
   setRadiusFormData,
   radiusFormData,
 }) => {
-  const user = firebase.auth().currentUser;
 
-  const addRadiusProfile = async () => {
-    if (user !== null) {
-      setRadiusFormData({
-        ...radiusFormData,
-        newRadius: false,
-        radiusCreatorUid: user.uid
-      });
-    }
-  }
   const initialValues = radiusFormData;
-  async function geocode(
-      radiusCreatorUid: string,
-      creationTime: number,
+  const { isLoggedIn, user } = useFirebaseAuth();
+  
+  const radiusCreation = async (           
       radiusName: string,
       street: string,
       city: string,
@@ -45,13 +34,12 @@ const CreateRadiusStep2: React.FC<Props> = ({
       priceRangeHigh: number,
       priceRangeLow: number,
       sqft: number | string,
-      notes?: string
-    ) {
+      notes?: string) => 
+  {
       const response = await fetch("/api/radiusCreation", {
         method: "POST",
         body: JSON.stringify({
-          radiusCreatorUid,
-          creationTime,
+          user: user?.uid,
           radiusName,
           street,
           city,
@@ -66,24 +54,25 @@ const CreateRadiusStep2: React.FC<Props> = ({
           "Content-type": "application/json",
         },
       });
-      const data = await response.json();
-      setRadiusFormData({
-        ...radiusFormData,
-        street: data.addressData.street,
-        city: data.addressData.city,
-        state: data.addressData.state,
-        zip: data.addressData.zip,
-        lat: data.addressData.lat,
-        lng: data.addressData.lng,
-        priceRangeHigh: Number(priceRangeHigh),
-        priceRangeLow: Number(priceRangeLow),
-        sqft: Number(sqft),
-        notes: notes,
-        newRadius: true,
-      });
-      if (radiusFormData.newRadius) {
-        addRadiusProfile()
-      }
+    const data = await response.json();
+    console.log(data, "DATA")
+      // setRadiusFormData({
+      //   ...radiusFormData,
+      //   street: data.addressData.street,
+      //   city: data.addressData.city,
+      //   state: data.addressData.state,
+      //   zip: data.addressData.zip,
+      //   lat: data.addressData.lat,
+      //   lng: data.addressData.lng,
+      //   priceRangeHigh: Number(priceRangeHigh),
+      //   priceRangeLow: Number(priceRangeLow),
+      //   sqft: Number(sqft),
+      //   notes: notes,
+      //   newRadius: true,
+      // });
+      // if (radiusFormData.newRadius) {
+      //   addRadiusProfile()
+      // }
   }
 
   return (
@@ -93,10 +82,8 @@ const CreateRadiusStep2: React.FC<Props> = ({
           initialValues={initialValues}
           onSubmit={(values, actions) => {
             let newStreet = values.street.replaceAll(" ", "+");
-            let creationTime = Date.now()
-            geocode(
-              values.radiusCreatorUid,
-              creationTime,
+            
+            radiusCreation(
               values.radiusName,
               newStreet,
               values.city,
@@ -327,4 +314,4 @@ const CreateRadiusStep2: React.FC<Props> = ({
   );
 };
 
-export default CreateRadiusStep2;
+export default CreateRadiusStep3;
