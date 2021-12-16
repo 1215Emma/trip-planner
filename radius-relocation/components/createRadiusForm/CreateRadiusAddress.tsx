@@ -1,25 +1,20 @@
 import React from "react";
-import { RadiusData } from "./CreateRadius";
-import Step2Styles from "../styles/CreateRadiusStep2.module.css";
+import { FormProps } from "./CreateRadius";
+import Step2Styles from "../../styles/CreateRadiusStep2.module.css";
 
-interface Props {
-  radiusFormData: RadiusData;
-  setRadiusFormData: React.Dispatch<React.SetStateAction<RadiusData>>;
-}
-const CreateRadiusStep2: React.FC<Props> = ({
-  setRadiusFormData,
-  radiusFormData,
-}) => {
 
-    return (
+const CreateRadiusStep2: React.FC<FormProps> = (props) => {
+  const radiusFormData = props.radiusFormData;
+  const setRadiusFormData = props.setRadiusFormData;
+  return (
     <>
-      <div className={Step2Styles.address}>
-        <label className={Step2Styles.addressLabel}>Address</label>
-        <label className={Step2Styles.subAddressLabel}>Street</label>
+      <div className='flex flex-col justify-between font-IBMPlexSans'>
+        <label className='text-3xl mt-16'>Address</label>
+        <label className='text-xl mb-2 mt-4'>Street</label>
         <input
-          className={Step2Styles.inputStreet}
-          type="text"
-          placeholder="1234 Beach Avenue"
+          className='border-none bg-inputField h-16 w-[30rem] shadow-input text-base pl-4'
+          type='text'
+          placeholder='1234 Beach Avenue'
           value={radiusFormData.street}
           onChange={(event) =>
             setRadiusFormData({
@@ -28,13 +23,13 @@ const CreateRadiusStep2: React.FC<Props> = ({
             })
           }
         />
-        <div className={Step2Styles.addressNoStreet}>
-          <div className={Step2Styles.addressNoStreetIndividual}>
-            <label className={Step2Styles.subAddressLabel}>City</label>
+        <div className='flex justify-start mt-4 mb-4'>
+          <div className='flex flex-col justify-between'>
+            <label className='text-base mb-2'>City</label>
             <input
-              className={Step2Styles.inputCity}
-              type="text"
-              placeholder="Los Angeles"
+              className='border-none bg-inputField h-16 w-[20rem] shadow-input text-base p-4 mr-4'
+              type='text'
+              placeholder='Los Angeles'
               value={radiusFormData.city}
               onChange={(event) =>
                 setRadiusFormData({
@@ -44,12 +39,12 @@ const CreateRadiusStep2: React.FC<Props> = ({
               }
             />
           </div>
-          <div className={Step2Styles.addressNoStreetIndividual}>
-            <label className={Step2Styles.subAddressLabel}>State</label>
+          <div className='flex flex-col'>
+            <label className='text-base mb-4'>State</label>
             <input
-              className={Step2Styles.inputState}
-              type="text"
-              placeholder="California"
+              className='bg-inputField h-16 w-[10rem] shadow-input text-base pl-4 mr-4'
+              type='text'
+              placeholder='California'
               value={radiusFormData.state}
               onChange={(event) =>
                 setRadiusFormData({
@@ -59,12 +54,12 @@ const CreateRadiusStep2: React.FC<Props> = ({
               }
             />
           </div>
-          <div className={Step2Styles.addressNoStreetIndividual}>
-            <label className={Step2Styles.subAddressLabel}>Zip</label>
+          <div className='flex flex-col'>
+            <label className='text-base mb-4'>Zip</label>
             <input
-              className={Step2Styles.inputZip}
-              type="text"
-              placeholder="98005"
+              className='bg-inputField h-16 w-[10rem] shadow-input text-base pl-4 mr-4'
+              type='text'
+              placeholder='98005'
               value={radiusFormData.zip}
               onChange={(event) =>
                 setRadiusFormData({
@@ -77,9 +72,9 @@ const CreateRadiusStep2: React.FC<Props> = ({
         </div>
         <label>Link to listing</label>
         <input
-          className={Step2Styles.input}
-          type="text"
-          placeholder="e.g. https://www.zillow.com/homedetails/1126-Magnolia-Ave-UNIT-1126-Los-Angeles-CA-90006/2067653549_zpid/"
+          className='bg-inputField h-16 w-[42rem] shadow-input text-base pl-4 mr-4'
+          type='text'
+          placeholder='e.g. https://www.zillow.com/homedetails/1126-Magnolia-Ave-UNIT-1126-Los-Angeles-CA-90006/2067653549_zpid/'
           value={radiusFormData.externalUrl}
           onChange={(event) =>
             setRadiusFormData({

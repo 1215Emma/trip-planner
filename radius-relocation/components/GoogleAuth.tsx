@@ -39,18 +39,4 @@ const GoogleAuth = async () => {
 }
 
 export default GoogleAuth
-// const uiConfig = {
-//   signInFlow: "popup",
-//   SignInOptions: [firebase.auth.GoogleAuthProvider.PROVIDER_ID],
-//   callbacks: {
-//     // Avoid redirects after sign-in
-//     signInSuccessWithAuthResult: (): boolean => false,
-//   },
-// };
 
-// const GoogleAuth: React.FC = () => {
-//   return (
-//       <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
-//   );
-// };
-// export default GoogleAuth;

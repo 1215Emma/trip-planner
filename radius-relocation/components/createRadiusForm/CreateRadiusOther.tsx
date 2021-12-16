@@ -1,6 +1,6 @@
 import React from "react";
-import { RadiusData } from "./CreateRadius";
-import Step3Styles from "../styles/CreateRadiusStep3.module.css";
+import { FormProps } from "./CreateRadius";
+import Step3Styles from "../../styles//CreateRadiusStep3.module.css";
 import { GoDash } from "react-icons/go";
 import {
   Formik,
@@ -11,70 +11,64 @@ import {
   FieldProps,
   validateYupSchema,
 } from "formik";
-import { useFirebaseAuth } from '../../auth/AuthProvider'
+import { useFirebaseAuth } from "../../auth/AuthProvider";
 
-interface Props {
-  radiusFormData: RadiusData;
-  setRadiusFormData: React.Dispatch<React.SetStateAction<RadiusData>>;
-}
-const CreateRadiusStep3: React.FC<Props> = ({
-  setRadiusFormData,
-  radiusFormData,
-}) => {
-
-  const initialValues = radiusFormData;
-  const { isLoggedIn, user } = useFirebaseAuth();
+const CreateRadiusStep3: React.FC<FormProps> = (props) => {
+  const radiusFormData = props.radiusFormData;
+  const setRadiusFormData = props.setRadiusFormData;
+  const { user } = useFirebaseAuth();
   
-  const radiusCreation = async (           
-      radiusName: string,
-      street: string,
-      city: string,
-      state: string,
-      zip: string,
-      priceRangeHigh: number,
-      priceRangeLow: number,
-      sqft: number | string,
-      notes?: string) => 
-  {
-      const response = await fetch("/api/radiusCreation", {
-        method: "POST",
-        body: JSON.stringify({
-          user: user?.uid,
-          radiusName,
-          street,
-          city,
-          state,
-          zip,
-          priceRangeHigh,
-          priceRangeLow,
-          sqft,
-          notes
-        }),
-        headers: {
-          "Content-type": "application/json",
-        },
-      });
+  const radiusCreation = async (
+    radiusName: string,
+    street: string,
+    city: string,
+    state: string,
+    zip: string,
+    priceRangeHigh: number,
+    priceRangeLow: number,
+    sqft: number | string,
+    notes?: string
+  ) => {
+    const response = await fetch("/api/radiusCreation", {
+      method: "POST",
+      body: JSON.stringify({
+        user: user?.uid,
+        radiusName,
+        street,
+        city,
+        state,
+        zip,
+        priceRangeHigh,
+        priceRangeLow,
+        sqft,
+        notes,
+      }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
     const data = await response.json();
-    console.log(data, "DATA")
-      // setRadiusFormData({
-      //   ...radiusFormData,
-      //   street: data.addressData.street,
-      //   city: data.addressData.city,
-      //   state: data.addressData.state,
-      //   zip: data.addressData.zip,
-      //   lat: data.addressData.lat,
-      //   lng: data.addressData.lng,
-      //   priceRangeHigh: Number(priceRangeHigh),
-      //   priceRangeLow: Number(priceRangeLow),
-      //   sqft: Number(sqft),
-      //   notes: notes,
-      //   newRadius: true,
-      // });
-      // if (radiusFormData.newRadius) {
+    console.log(data, "DATA");
+    // setRadiusFormData({
+    //   ...radiusFormData,
+    //   street: data.addressData.street,
+    //   city: data.addressData.city,
+    //   state: data.addressData.state,
+    //   zip: data.addressData.zip,
+    //   lat: data.addressData.lat,
+    //   lng: data.addressData.lng,
+    //   priceRangeHigh: Number(priceRangeHigh),
+    //   priceRangeLow: Number(priceRangeLow),
+    //   sqft: Number(sqft),
+    //   notes: notes,
+    //   newRadius: true,
+    // });
+    // if (radiusFormData.newRadius) {
       //   addRadiusProfile()
-      // }
-  }
-
+    // }
+  };
+  
+  const initialValues = radiusFormData;
   return (
     <div className={Step3Styles.content}>
       <div className={Step3Styles.contentLeft}>
@@ -82,7 +76,6 @@ const CreateRadiusStep3: React.FC<Props> = ({
           initialValues={initialValues}
           onSubmit={(values, actions) => {
             let newStreet = values.street.replaceAll(" ", "+");
-            
             radiusCreation(
               values.radiusName,
               newStreet,
@@ -92,7 +85,7 @@ const CreateRadiusStep3: React.FC<Props> = ({
               values.priceRangeHigh,
               values.priceRangeLow,
               values.sqft,
-              values.notes,
+              values.notes
             );
             actions.setSubmitting(false);
           }}
@@ -104,9 +97,9 @@ const CreateRadiusStep3: React.FC<Props> = ({
                 <div className={Step3Styles.priceRange}>
                   <Field
                     className={Step3Styles.input}
-                    id="priceRangeLow"
-                    name="priceRangeLow"
-                    placeholder="Min"
+                    id='priceRangeLow'
+                    name='priceRangeLow'
+                    placeholder='Min'
                   />
                   <GoDash
                     style={{
@@ -118,35 +111,35 @@ const CreateRadiusStep3: React.FC<Props> = ({
                   />
                   <Field
                     className={Step3Styles.input}
-                    id="priceRangeHigh"
-                    name="priceRangeHigh"
-                    placeholder="Max"
+                    id='priceRangeHigh'
+                    name='priceRangeHigh'
+                    placeholder='Max'
                   />
                 </div>
               </div>
               <div className={Step3Styles.sqft}>
-                <label htmlFor="sqft">Square Feet</label>
+                <label htmlFor='sqft'>Square Feet</label>
                 <Field
                   className={Step3Styles.input}
-                  id="sqft"
-                  name="sqft"
-                  placeholder="sqft"
+                  id='sqft'
+                  name='sqft'
+                  placeholder='sqft'
                 />
               </div>
             </div>
             <div className={Step3Styles.comments}>
               <label>Notes</label>
               <Field
-                component="textarea"
-                id="notes"
-                name="notes"
+                component='textarea'
+                id='notes'
+                name='notes'
                 className={Step3Styles.commentsBox}
                 rows={10}
                 cols={50}
-                placeholder="add any comments"
+                placeholder='add any comments'
               />
             </div>
-            <button className={Step3Styles.submitForm} type="submit">
+            <button className={Step3Styles.submitForm} type='submit'>
               Create Radius
             </button>
           </Form>
@@ -159,7 +152,7 @@ const CreateRadiusStep3: React.FC<Props> = ({
                 border: radiusFormData.bed === 0 ? "#128b7a solid 4px" : "",
               }}
               className={Step3Styles.homeButtons}
-              type="button"
+              type='button'
               onClick={() =>
                 setRadiusFormData({
                   ...radiusFormData,
@@ -174,7 +167,7 @@ const CreateRadiusStep3: React.FC<Props> = ({
                 border: radiusFormData.bed === 1 ? "#128b7a solid 4px" : "",
               }}
               className={Step3Styles.homeButtons}
-              type="button"
+              type='button'
               onClick={() =>
                 setRadiusFormData({
                   ...radiusFormData,
@@ -189,7 +182,7 @@ const CreateRadiusStep3: React.FC<Props> = ({
                 border: radiusFormData.bed === 2 ? "#128b7a solid 4px" : "",
               }}
               className={Step3Styles.homeButtons}
-              type="button"
+              type='button'
               onClick={() =>
                 setRadiusFormData({
                   ...radiusFormData,
@@ -204,7 +197,7 @@ const CreateRadiusStep3: React.FC<Props> = ({
                 border: radiusFormData.bed === 3 ? "#128b7a solid 4px" : "",
               }}
               className={Step3Styles.homeButtons}
-              type="button"
+              type='button'
               onClick={() =>
                 setRadiusFormData({
                   ...radiusFormData,
@@ -219,7 +212,7 @@ const CreateRadiusStep3: React.FC<Props> = ({
                 border: radiusFormData.bed === 4 ? "#128b7a solid 4px" : "",
               }}
               className={Step3Styles.homeButtons5}
-              type="button"
+              type='button'
               onClick={() =>
                 setRadiusFormData({
                   ...radiusFormData,
@@ -237,7 +230,7 @@ const CreateRadiusStep3: React.FC<Props> = ({
                 border: radiusFormData.bath === 1 ? "#128b7a solid 4px" : "",
               }}
               className={Step3Styles.homeButtons}
-              type="button"
+              type='button'
               onClick={() =>
                 setRadiusFormData({
                   ...radiusFormData,
@@ -252,7 +245,7 @@ const CreateRadiusStep3: React.FC<Props> = ({
                 border: radiusFormData.bath === 1.5 ? "#128b7a solid 4px" : "",
               }}
               className={Step3Styles.homeButtons}
-              type="button"
+              type='button'
               onClick={() =>
                 setRadiusFormData({
                   ...radiusFormData,
@@ -267,7 +260,7 @@ const CreateRadiusStep3: React.FC<Props> = ({
                 border: radiusFormData.bath === 2 ? "#128b7a solid 4px" : "",
               }}
               className={Step3Styles.homeButtons}
-              type="button"
+              type='button'
               onClick={() =>
                 setRadiusFormData({
                   ...radiusFormData,
@@ -282,7 +275,7 @@ const CreateRadiusStep3: React.FC<Props> = ({
                 border: radiusFormData.bath === 2.5 ? "#128b7a solid 4px" : "",
               }}
               className={Step3Styles.homeButtons}
-              type="button"
+              type='button'
               onClick={() =>
                 setRadiusFormData({
                   ...radiusFormData,
@@ -297,7 +290,7 @@ const CreateRadiusStep3: React.FC<Props> = ({
                 border: radiusFormData.bath === 3 ? "#128b7a solid 4px" : "",
               }}
               className={Step3Styles.homeButtons5}
-              type="button"
+              type='button'
               onClick={() =>
                 setRadiusFormData({
                   ...radiusFormData,

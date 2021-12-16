@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import CreateRadiusStyles from "../styles/CreateRadius.module.css";
+import CreateRadiusStyles from "../../styles/CreateRadius.module.css";
 import {
   FaRegArrowAltCircleRight,
   FaRegArrowAltCircleLeft,
 } from "react-icons/fa";
+import { AiOutlineLine } from "react-icons/ai";
+import { MdDriveFileRenameOutline } from "react-icons/md";
 import CreateRadiusName from "../createRadiusForm/CreateRadiusName";
 import CreateRadiusAddress from "../createRadiusForm/CreateRadiusAddress";
 import CreateRadiusOther from "../createRadiusForm/CreateRadiusOther";
+import StepFlow from "./StepFlow";
+import ProgressCircle from "./ProgressCircle";
 
 // Data structure for Radius profiles
 export interface RadiusData {
-  radiusCreatorUid: string,
+  radiusCreatorUid: string;
   radiusName: string;
   street: string;
   city: string;
@@ -26,7 +30,6 @@ export interface RadiusData {
   externalUrl: string;
   lat: number;
   lng: number;
-  newRadius: boolean;
 }
 
 const radiusData: RadiusData = {
@@ -45,7 +48,6 @@ const radiusData: RadiusData = {
   externalUrl: "",
   lat: 0,
   lng: 0,
-  newRadius: false
 };
 
 // Title/Header for each section of multi-Step form
@@ -55,33 +57,25 @@ const formTitles: string[] = [
   "Share other details about this home",
 ];
 
-const CreateRadius: React.FC = ({
-}) => {
+export interface FormProps {
+  radiusFormData: RadiusData;
+  setRadiusFormData: React.Dispatch<React.SetStateAction<RadiusData>>;
+}
+
+const CreateRadius: React.FC = ({}) => {
   const [page, setPage] = useState<number>(0);
+  const [prevPageClicked, setPrevPageClicked] = useState<boolean>(false);
   const [radiusFormData, setRadiusFormData] = useState<RadiusData>(radiusData);
+
+  let props = { radiusFormData, setRadiusFormData };
   // Handles displaying which form page to render
   const PageDisplay = () => {
     if (page === 0) {
-      return (
-        <CreateRadiusName
-          setRadiusFormData={setRadiusFormData}
-          radiusFormData={radiusFormData}
-        />
-      );
+      return <CreateRadiusName {...props} />;
     } else if (page === 1) {
-      return (
-        <CreateRadiusAddress
-          setRadiusFormData={setRadiusFormData}
-          radiusFormData={radiusFormData}
-        />
-      );
+      return <CreateRadiusAddress {...props} />;
     } else if (page === 2) {
-      return (
-        <CreateRadiusOther
-          setRadiusFormData={setRadiusFormData}
-          radiusFormData={radiusFormData}
-        />
-      );
+      return <CreateRadiusOther {...props} />;
     }
   };
 
@@ -90,50 +84,65 @@ const CreateRadius: React.FC = ({
     if (page === 1) {
       return (
         <button
-          className={CreateRadiusStyles.navigationButtonRight}
+          className='border-none bg-none'
           disabled={page == formTitles.length - 1}
           onClick={() => {
             setPage((currPage) => currPage + 1);
+            setPrevPageClicked(false);
           }}
         >
-          <FaRegArrowAltCircleRight style={{ fontSize: "48px" }} />
+          <h2 className='border-none bg-none text-2xl'>Next</h2>
         </button>
       );
     } else {
       return (
         <button
-          className={CreateRadiusStyles.navigationButtonRight}
+          className='border-none bg-none'
           disabled={page == formTitles.length - 1}
           onClick={() => {
             setPage((currPage) => currPage + 1);
+            setPrevPageClicked(false); 
           }}
         >
-          <FaRegArrowAltCircleRight style={{ fontSize: "48px" }} />
+          <h2 className='border-none bg-none text-2xl'>Next</h2>
         </button>
       );
     }
   };
-  
+
   return (
     <AnimatePresence initial={false} exitBeforeEnter={true}>
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className={CreateRadiusStyles.formContainer}
+        className='relative top-16 left-0 flex flex-col width-full h-[calc(100vh-4rem)] overflow-hidden'
       >
-        <h1>{formTitles[page]}</h1>
-        <div className={CreateRadiusStyles.innerFormContainer}>
-          <button
-            className={CreateRadiusStyles.navigationButtonLeft}
-            disabled={page == 0}
-            onClick={() => {
-              setPage((currPage) => currPage - 1);
-            }}
-          >
-            <FaRegArrowAltCircleLeft style={{ fontSize: "48px" }} />
-          </button>
+        <div className='flex justify-between'>
+          <h1 className='ml-28 pt-4 mt-20 font-merriweather text-5xl text-white'>
+            {formTitles[page]}
+          </h1>
+          <ProgressCircle page={page} prevPageClicked={prevPageClicked} />
+        </div>
+        <div className='flex flex-col justify-between h-full ml-36'>
           {PageDisplay()}
-          {NavNext()}
+          <div
+            className='flex justify-end items-center mr-28 mt-16
+          mb-24 h-auto'
+          >
+            <button
+              className='border-none bg-none'
+              disabled={page == 0}
+              onClick={() => {
+                setPage((currPage) => currPage - 1);
+                setPrevPageClicked(true);
+              }}
+            >
+              {/* <StepFlow /> */}
+              <h2 className='border-none bg-none text-2xl'>Previous</h2>
+            </button>
+            <AiOutlineLine className='rotate-90 text-3xl' />
+            {NavNext()}
+          </div>
         </div>
       </motion.div>
     </AnimatePresence>

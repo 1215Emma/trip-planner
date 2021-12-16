@@ -113,7 +113,7 @@ const Maps: React.FC = () => {
   };
 
   return (
-    <div className={MapStyles.mapContainer}>
+    <div className='absolute bottom-0 left-0 w-[calc(100vw-41.5rem)]  overflow-hidden'>
       {/* <input
         type="text"
         placeholder="address"
