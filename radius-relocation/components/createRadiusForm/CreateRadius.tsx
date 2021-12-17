@@ -23,8 +23,8 @@ export interface RadiusData {
   zip: string;
   priceRangeLow: number;
   priceRangeHigh: number;
-  bed: number;
-  bath: number;
+  bed: string;
+  bath: string;
   sqft: number | string;
   notes?: string;
   externalUrl: string;
@@ -41,8 +41,8 @@ const radiusData: RadiusData = {
   zip: "",
   priceRangeLow: 0,
   priceRangeHigh: 0,
-  bed: 0,
-  bath: 0,
+  bed: "",
+  bath: "",
   sqft: 0,
   notes: "",
   externalUrl: "",
@@ -64,7 +64,6 @@ export interface FormProps {
 
 const CreateRadius: React.FC = ({}) => {
   const [page, setPage] = useState<number>(0);
-  const [prevPageClicked, setPrevPageClicked] = useState<boolean>(false);
   const [radiusFormData, setRadiusFormData] = useState<RadiusData>(radiusData);
 
   let props = { radiusFormData, setRadiusFormData };
@@ -88,7 +87,6 @@ const CreateRadius: React.FC = ({}) => {
           disabled={page == formTitles.length - 1}
           onClick={() => {
             setPage((currPage) => currPage + 1);
-            setPrevPageClicked(false);
           }}
         >
           <h2 className='border-none bg-none text-2xl'>Next</h2>
@@ -101,7 +99,6 @@ const CreateRadius: React.FC = ({}) => {
           disabled={page == formTitles.length - 1}
           onClick={() => {
             setPage((currPage) => currPage + 1);
-            setPrevPageClicked(false); 
           }}
         >
           <h2 className='border-none bg-none text-2xl'>Next</h2>
@@ -121,7 +118,7 @@ const CreateRadius: React.FC = ({}) => {
           <h1 className='ml-28 pt-4 mt-20 font-merriweather text-5xl text-white'>
             {formTitles[page]}
           </h1>
-          <ProgressCircle page={page} prevPageClicked={prevPageClicked} />
+          <ProgressCircle page={page} />
         </div>
         <div className='flex flex-col justify-between h-full ml-36'>
           {PageDisplay()}
@@ -134,7 +131,6 @@ const CreateRadius: React.FC = ({}) => {
               disabled={page == 0}
               onClick={() => {
                 setPage((currPage) => currPage - 1);
-                setPrevPageClicked(true);
               }}
             >
               {/* <StepFlow /> */}

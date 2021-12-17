@@ -3,6 +3,9 @@ module.exports = {
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
+  // prefix: {
+  //   "-a": '-a',
+  // },
   theme: {
     colors: {
       transparent: "transparent",
@@ -19,10 +22,14 @@ module.exports = {
       black: "#000000",
       progressSpinner: "#888686",
       inputField: "#ffffff80",
+      formColor2: "#626468",
+      formInputText: "#000000bf",
+      commentBox: "#ffffff40",
     },
     boxShadow: {
-      heavy: "box-shadow: 13px 10px 10px 20px #888888",
+      heavy: "13px 10px 10px 20px #888888",
       input: "0px 2px 10px 2px rgba(0, 0, 0, 0.25)",
+      circular: "0px 0px 10px 2px rgba(0, 0, 0, 0.25)",
     },
     fontFamily: {
       merriweather: ["Merriweather", "serif"],

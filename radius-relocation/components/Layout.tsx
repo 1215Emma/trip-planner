@@ -11,6 +11,7 @@ const Layout: React.FC = ({ children }) => {
   const [isCreateRadiusOpen, setIsCreateRadiusOpen] = useState<boolean>(false);
 
   return (
+    <>
     <FirebaseAuthProvider>
       <Navigation />
       <main>
@@ -19,8 +20,8 @@ const Layout: React.FC = ({ children }) => {
         <AnimatePresence initial={false} exitBeforeEnter={true}>
           {isCreateRadiusOpen && (
             <motion.div
-              initial={{ opacity: 1, y: "-100%" }}
-              animate={{
+            initial={{ opacity: 1, y: "-100%" }}
+            animate={{
                 opacity: 1,
                 y: 0,
                 transition: { duration: 0.5 },
@@ -35,9 +36,10 @@ const Layout: React.FC = ({ children }) => {
         <RadiusProfiles
           isCreateRadiusOpen={isCreateRadiusOpen}
           setIsCreateRadiusOpen={setIsCreateRadiusOpen}
-        />
+          />
       </main>
     </FirebaseAuthProvider>
+          </>
   );
 };
 

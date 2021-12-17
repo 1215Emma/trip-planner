@@ -1,7 +1,7 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import { firebase } from "../firebase/firebase";
 import { getAdditionalUserInfo } from 'firebase/auth'
+
 const createUser = async () => {
   const user = firebase.auth().currentUser;
   if (user) {
