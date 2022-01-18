@@ -7,7 +7,9 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import geocode from '../pages/api/geocode'
 
-interface Props {}
+interface Props { }
+
+// API KEY GOOGLE MAPS
 const googleMapsApiKey: any =
   process.env.NEXT_PUBLIC_REACT_APP_GOOGLE_MAPS_API_KEY;
 
