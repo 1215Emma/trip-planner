@@ -1,5 +1,5 @@
 {
-  "name": "radius-relocation",
+  "name": "trip-planner",
   "private": true,
   "scripts": {
     "dev": "next dev",
