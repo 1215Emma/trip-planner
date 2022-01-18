@@ -20,7 +20,8 @@ import mapStyles from "../styles/mapStyles";
 //   ComboboxOption,
 // } from "@reach/combobox";
 import "@reach/combobox/styles.css";
-
+// import RegisterForm from './Form'
+// export { RegisterValues } from './Form'
 
 // Styling for Google Maps container
 interface MapProps {
@@ -79,6 +80,8 @@ const LoadingMessages: LoadingMessagesTypes = {
   isLoadedFalse: "Loading Maps",
 };
 
+
+
 const Maps: React.FC = () => {
   const [markers, setMarkers] = useState<Markers["RadiusProfiles"]>([]);
   const [input, setInput] = useState({ address: "" });
@@ -113,16 +116,6 @@ const Maps: React.FC = () => {
   };
 
   return (
-    <div className='absolute bottom-0 left-0 w-[calc(100vw-41.5rem)]  overflow-hidden'>
-      {/* <input
-        type="text"
-        placeholder="address"
-        className=""
-        value={input.address}
-        onChange={handleChange}
-        name="address"
-      />
-      <button>Search</button> */}
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
         zoom={13}
@@ -139,7 +132,6 @@ const Maps: React.FC = () => {
           );
         })}
       </GoogleMap>
-    </div>
   );
 };
 

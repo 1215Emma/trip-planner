@@ -3,19 +3,20 @@ import User  from './User'
 
 const Navigation: React.FC = () => {
   return (
-    <nav className="absolute z-10 flex items-center justify-start bg-navBarColor text-white p-2.5 w-screen h-16">
-      <h1 className="text-radiusGreen no-underline">
-        <span>Radius</span> <span className="text-radiusOrange stroke-radiusGreen stroke-0.25">Relocation</span>
+    <nav className='flex items-center justify-between text-white p-2.5 w-full h-16'>
+      <h1 className='text-radiusOrange no-underline font-francoisOne font-bold text-2xl ml-4'>
+        <span>Trip</span>
+        <span>Planner</span>
       </h1>
-      <ul className="flex justify-center items-center list-none m-2">
-        <li className="m-4">
-          <Link href="/">Home</Link>
+      <ul className='flex justify-center items-center list-none mr-4 text-offBlack font-bold'>
+        <li className='m-4'>
+          <Link href='/'>Log in</Link>
         </li>
         <li>
-          <Link href="/radius">Explore</Link>
+          <Link href='/radius'>Sign Up</Link>
         </li>
       </ul>
-        <User /> 
+      {/* <User />  */}
     </nav>
   );
 }
