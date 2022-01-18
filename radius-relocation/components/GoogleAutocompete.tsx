@@ -8,6 +8,8 @@ import PlacesAutocomplete, {
 import geocode from '../pages/api/geocode'
 
 interface Props {}
+const googleMapsApiKey: any =
+  process.env.NEXT_PUBLIC_REACT_APP_GOOGLE_MAPS_API_KEY;
 
 const GoogleAutocompete = (props: Props) => {
   const [address, setAddress] = useState<string>("");
@@ -33,10 +35,12 @@ const GoogleAutocompete = (props: Props) => {
     console.log(data, "DATA");
     // const results = await geocode()
   };
+
+
   return (
     <>
       <Script
-        src='https://maps.googleapis.com/maps/api/js?key=AIzaSyABE5X7QOavD2wBnyPMAe7j99TWqJf2_kY&libraries=places'
+        src={`https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}libraries=places`}
         strategy='beforeInteractive'
       />
       <PlacesAutocomplete
@@ -47,7 +51,7 @@ const GoogleAutocompete = (props: Props) => {
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
             <div className='flex bg-lightGrey rounded items-center'>
-              <FaMapMarkerAlt className="ml-4 opacity-40"/>
+              <FaMapMarkerAlt className='ml-4 opacity-40' />
               <input
                 {...getInputProps({ placeholder: "Add a place" })}
                 className='bg-lightGrey w-full h-12 px-4 outline-none'
