@@ -1,18 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navigation from '../components/Navigation'
-import StartPlanningButton from '../components/StartPlanningButton'
 import StartPlanningForm from '../components/StartPlanningForm'
-interface Props {
-  
-}
+import Link from 'next/link'
+import Script from 'next/script'
 
-const StartPlanning = (props: Props) => {
+const StartPlanning = () => {
+
   return (
     <div>
       <Navigation />
       <div className='flex flex-col justify-center items-center'>
-        <h1 className='font-bold text-darkPurple text-3xl my-12'>Plan a new trip</h1>
+        <h1 className='font-bold text-darkPurple text-3xl my-12'>
+          Plan a new trip
+        </h1>
         <StartPlanningForm />
+        <Link href='/PlanningDashboard' passHref>
+          <a className='startPlanningBtn'>Start planning</a>
+        </Link>
       </div>
     </div>
   );

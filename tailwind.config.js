@@ -27,7 +27,8 @@ module.exports = {
       formInputText: "#000000bf",
       commentBox: "#ffffff40",
       darkPurple: "#570861",
-      lightGrey: "#D3D3D3",
+      lightGrey: "#E0E0E0",
+      pinRed: "#F4121C",
     },
     boxShadow: {
       heavy: "13px 10px 10px 20px #888888",

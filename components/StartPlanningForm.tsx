@@ -7,7 +7,6 @@ import {
   Field,
   FieldProps,
 } from "formik";
-import StartPlanningButton from "./StartPlanningButton";
 import { BiCalendar } from "react-icons/bi";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css'
@@ -47,12 +46,6 @@ const StartPlanningForm: React.FC<{}> = () => {
             <label className='text-sm font-semibold'>Dates (optional)</label>
             <div className='flex items-center mb-2'>
               <BiCalendar className='mr-4 text-2xl' />
-              {/* <Field
-                id='startDate'
-                name='startDate'
-                placeholder='Start date'
-                className='h-8 w-32 rounded bg-offWhite'
-              /> */}
               <DatePicker
                 className='bg-offWhite w-32'
                 selected={startDate}
@@ -69,7 +62,6 @@ const StartPlanningForm: React.FC<{}> = () => {
             />
           </div>
         </div>
-        <StartPlanningButton />
       </Form>
     </Formik>
   );

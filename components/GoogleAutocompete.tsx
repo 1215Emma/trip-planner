@@ -1,54 +1,74 @@
-import React, { useState } from "react";
-import Script from "next/script";
-import { FaMapMarkerAlt } from 'react-icons/Fa'
+import React from "react";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
-import geocode from '../pages/api/geocode'
+import { ItineraryData } from '../pages/PlanningDashboard'
 
-interface Props { }
 
 // API KEY GOOGLE MAPS
 const googleMapsApiKey: any =
   process.env.NEXT_PUBLIC_REACT_APP_GOOGLE_MAPS_API_KEY;
 
-const GoogleAutocompete = (props: Props) => {
-  const [address, setAddress] = useState<string>("");
-  const [coordinates, setCoordinates] = useState({ lat: null, lng: null })
-  console.log(address)
+interface AutocompleteProps {
+  address: string;
+  setAddress: React.Dispatch<React.SetStateAction<string>>;
+  setItineraryData: React.Dispatch<React.SetStateAction<ItineraryData[]>>;
+}
+
+interface FormattedAddress {
+  street_number: string;
+  route: string;
+  city: string;
+  state: string;
+  postal_code: string
+};
+
+const GoogleAutocompete: React.FC<AutocompleteProps> = (props) => {
+  const address = props.address
+  const setAddress = props.setAddress 
+  const setItineraryData = props.setItineraryData 
+
   const handleSelect = async (value: string) => {
-    const splitTerm = value.split(",")
-    const street = splitTerm[1]
-    const city = splitTerm[2]
-    const state = splitTerm[3]
-    const response = await fetch("/api/geocode", {
-      method: "POST",
-      body: JSON.stringify({
-        street,
-        city,
-        state
-      }),
-      headers: {
-        "Content-type": "application/json",
+    const results = await geocodeByAddress(value)
+    const latLng = await getLatLng(results[0]);
+    console.log(results, "results")
+    const splitValue = value.split(",")
+    const addressArray: string[] = [];
+    const resultsAddress = results[0].address_components
+    for (let i = 0; i < resultsAddress.length; i++) {
+      if (resultsAddress[i].types[0] == "street_number" || resultsAddress[i].types[0] == "route" || resultsAddress[i].types[0] == "locality" || resultsAddress[i].types[0] == "administrative_area_level_1" || resultsAddress[i].types[0] == "postal_code") {
+        addressArray.push(resultsAddress[i].short_name)
+      }
+    }
+    const formattedAddress: FormattedAddress = {
+      street_number: addressArray[0],
+      route: addressArray[1],
+      city: addressArray[2],
+      state: addressArray[3],
+      postal_code: addressArray[4],
+    };
+
+    setItineraryData((itinerary) => [
+      ...itinerary,
+      {
+        place: splitValue[0],
+        address: formattedAddress,
+        coordinates: latLng,
+        place_type: results[0].types
       },
-    });
-    const data = await response.json();
-    console.log(data, "DATA");
-    // const results = await geocode()
+    ]);
   };
 
-
   return (
-    <>
-      <Script
-        src={`https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}libraries=places`}
-        strategy='beforeInteractive'
-      />
+    <div className="mt-8">
+
       <PlacesAutocomplete
         value={address}
         onChange={setAddress}
         onSelect={handleSelect}
+        shouldFetchSuggestions={address.length > 1}
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
@@ -80,7 +100,7 @@ const GoogleAutocompete = (props: Props) => {
           </div>
         )}
       </PlacesAutocomplete>
-    </>
+    </div>
   );
 };
 

@@ -50,6 +50,7 @@ const radiusData: RadiusData = {
   lng: 0,
 };
 
+
 // Title/Header for each section of multi-Step form
 const formTitles: string[] = [
   "Give your Radius a name",
@@ -65,6 +66,7 @@ export interface FormProps {
 const CreateRadius: React.FC = ({}) => {
   const [page, setPage] = useState<number>(0);
   const [radiusFormData, setRadiusFormData] = useState<RadiusData>(radiusData);
+  
 
   let props = { radiusFormData, setRadiusFormData };
   // Handles displaying which form page to render

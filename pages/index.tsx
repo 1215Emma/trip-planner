@@ -1,12 +1,15 @@
+import react, { useState } from 'react'
 import type { NextPage } from "next";
 import Head from "next/head";
-import Script from "next/script";
+import Link from "next/link";
 import { FirebaseAuthProvider } from "../auth/AuthProvider";
 import GoogleMapFold from "../public/images/Google-map-fold.png";
 import Image from "next/image";
 import Navigation from '../components/Navigation'
-import StartPlanningButton from "../components/StartPlanningButton";
+
 const Home: NextPage = () => {
+  const [pageRendered, setPageRendered] = useState("");
+
   return (
     <div>
       <Head>
@@ -15,6 +18,7 @@ const Home: NextPage = () => {
       </Head>
       <FirebaseAuthProvider>
         <Navigation />
+
         <div className='flex flex-col justify-center items-center font-francoisOne text-center mx-6'>
           <h1 className='font-bold text-darkPurple text-3xl m-4'>
             The easiest way to plan your trip
@@ -23,7 +27,9 @@ const Home: NextPage = () => {
             Build, organize, and map your itineraries in a free travel web
             application designed for vacations
           </h2>
-          <StartPlanningButton />
+          <Link href='/StartPlanning' passHref>
+            <a className='startPlanningBtn'>Start planning</a>
+          </Link>
           <div className='opacity-40'>
             <Image src={GoogleMapFold} alt='map with pin' />
           </div>

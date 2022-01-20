@@ -1,7 +1,6 @@
 import react, { useState } from "react";
-import styles from "../styles/Layout.module.css";
 import Navigation from "./Navigation";
-import Maps from "./Maps";
+import Maps from "./Map";
 import RadiusProfiles from "./RadiusProfiles";
 import CreateRadius from "./createRadiusForm/CreateRadius";
 import { motion, AnimatePresence } from "framer-motion";

@@ -37,4 +37,7 @@
   .commentBox {
     @apply bg-commentBox border-black text-offWhite
   }
+  .startPlanningBtn {
+    @apply bg-radiusOrange text-white font-bold px-6 py-4 rounded-3xl my-6 w-40
+  }
 }
