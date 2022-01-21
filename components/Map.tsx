@@ -1,23 +1,8 @@
-import React, { useState } from "react";
-import MapStyles from "../styles/Map.module.css";
-import {
-  GoogleMap,
-  useLoadScript,
-  Marker,
-  InfoWindow,
-} from "@react-google-maps/api";
-import { formatRelative } from "date-fns";
+import React from "react";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import mapStyles from "../styles/mapStyles";
-// } from "use-places-autocomplete";
-// import {
-//   Combobox,
-//   ComboboxInput,
-//   ComboboxPopover,
-//   ConvoboxList,
-//   ComboboxOption,
-// } from "@reach/combobox";
 import "@reach/combobox/styles.css";
-import { ItineraryData } from '../pages/PlanningDashboard'
+import { ItineraryData } from "../pages/PlanningDashboard";
 
 // Styling for Google Maps container
 interface MapStyleProps {
@@ -51,28 +36,15 @@ const options = {
 
 // Click on map, places marker with timestamp
 
-// Google Maps API initialization 
-
-type LoadingMessagesTypes = {
-  isLoadError: string;
-  isLoadedFalse: string;
-};
-
-const LoadingMessages: LoadingMessagesTypes = {
-  isLoadError: "Error Loading Maps",
-  isLoadedFalse: "Loading Maps",
-};
+// Google Maps API initialization
 
 interface MapProps {
-  itineraryData: ItineraryData[]
+  itineraryData: ItineraryData[];
 }
 
 const Map: React.FC<MapProps> = (props) => {
-  const [input, setInput] = useState({ address: "" });
-  
-
-  const itineraryData = props.itineraryData 
-  console.log(itineraryData)
+  const itineraryData = props.itineraryData;
+  console.log(itineraryData);
   // Initializes loading functionality for Google Maps
   // const { isLoaded, loadError } = useLoadScript({
   //   googleMapsApiKey,
@@ -94,31 +66,34 @@ const Map: React.FC<MapProps> = (props) => {
   // };
 
   // Will eventually be for searching a desired location
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput({
-      ...input,
-      [e.target.name]: e.target.value,
-    });
-  };
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setInput({
+  //     ...input,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
 
   return (
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        zoom={13}
-        center={center}
-        options={options}
-        // onClick={handleClick}
-      >
+    <GoogleMap
+      mapContainerStyle={mapContainerStyle}
+      zoom={13}
+      center={center}
+      options={options}
+      // onClick={handleClick}
+    >
       {itineraryData.length > 0 &&
         itineraryData.map((itinerary) => {
           return (
             <Marker
               key={`${itinerary.coordinates.lat}${itinerary.coordinates.lng}`}
-              position={{ lat: itinerary.coordinates.lat, lng: itinerary.coordinates.lng }}
+              position={{
+                lat: itinerary.coordinates.lat,
+                lng: itinerary.coordinates.lng,
+              }}
             />
           );
         })}
-      </GoogleMap>
+    </GoogleMap>
   );
 };
 

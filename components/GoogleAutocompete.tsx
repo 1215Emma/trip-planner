@@ -4,12 +4,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
-import { ItineraryData } from '../pages/PlanningDashboard'
-
-
-// API KEY GOOGLE MAPS
-const googleMapsApiKey: any =
-  process.env.NEXT_PUBLIC_REACT_APP_GOOGLE_MAPS_API_KEY;
+import { ItineraryData } from "../pages/PlanningDashboard";
 
 interface AutocompleteProps {
   address: string;
@@ -22,24 +17,30 @@ interface FormattedAddress {
   route: string;
   city: string;
   state: string;
-  postal_code: string
-};
+  postal_code: string;
+}
 
 const GoogleAutocompete: React.FC<AutocompleteProps> = (props) => {
-  const address = props.address
-  const setAddress = props.setAddress 
-  const setItineraryData = props.setItineraryData 
+  const address = props.address;
+  const setAddress = props.setAddress;
+  const setItineraryData = props.setItineraryData;
 
   const handleSelect = async (value: string) => {
-    const results = await geocodeByAddress(value)
+    const results = await geocodeByAddress(value);
     const latLng = await getLatLng(results[0]);
-    console.log(results, "results")
-    const splitValue = value.split(",")
+    console.log(results, "results");
+    const splitValue = value.split(",");
     const addressArray: string[] = [];
-    const resultsAddress = results[0].address_components
+    const resultsAddress = results[0].address_components;
     for (let i = 0; i < resultsAddress.length; i++) {
-      if (resultsAddress[i].types[0] == "street_number" || resultsAddress[i].types[0] == "route" || resultsAddress[i].types[0] == "locality" || resultsAddress[i].types[0] == "administrative_area_level_1" || resultsAddress[i].types[0] == "postal_code") {
-        addressArray.push(resultsAddress[i].short_name)
+      if (
+        resultsAddress[i].types[0] == "street_number" ||
+        resultsAddress[i].types[0] == "route" ||
+        resultsAddress[i].types[0] == "locality" ||
+        resultsAddress[i].types[0] == "administrative_area_level_1" ||
+        resultsAddress[i].types[0] == "postal_code"
+      ) {
+        addressArray.push(resultsAddress[i].short_name);
       }
     }
     const formattedAddress: FormattedAddress = {
@@ -56,14 +57,13 @@ const GoogleAutocompete: React.FC<AutocompleteProps> = (props) => {
         place: splitValue[0],
         address: formattedAddress,
         coordinates: latLng,
-        place_type: results[0].types
+        place_type: results[0].types,
       },
     ]);
   };
 
   return (
     <div className="mt-8">
-
       <PlacesAutocomplete
         value={address}
         onChange={setAddress}
@@ -72,14 +72,14 @@ const GoogleAutocompete: React.FC<AutocompleteProps> = (props) => {
       >
         {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
           <div>
-            <div className='flex bg-lightGrey rounded items-center'>
-              <FaMapMarkerAlt className='ml-4 opacity-40' />
+            <div className="flex bg-lightGrey rounded items-center">
+              <FaMapMarkerAlt className="ml-4 opacity-40" />
               <input
                 {...getInputProps({ placeholder: "Add a place" })}
-                className='bg-lightGrey w-full h-12 px-4 outline-none'
+                className="bg-lightGrey w-full h-12 px-4 outline-none"
               />
             </div>
-            <div className='bg-radiusOrange h-full'>
+            <div className="bg-radiusOrange h-full">
               {loading ? <div>...loading</div> : null}
 
               {suggestions.slice(0, 3).map((suggestion) => {
