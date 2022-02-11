@@ -37,6 +37,7 @@ module.exports = {
     },
     fontFamily: {
       francoisOne: ["Francois One", "sans-serif"],
+      souvenir: ["Souvenir", "serif"],
     },
     keyframes: {
       progress0: {

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { FirebaseAuthProvider } from "../auth/AuthProvider";
 import GoogleMapFold from "../public/images/Google-map-fold.png";
 import Image from "next/image";
-import Navigation from "../components/Navigation";
+import Navigation from "../src/components/Navigation";
 
 const Home: NextPage = () => {
   return (

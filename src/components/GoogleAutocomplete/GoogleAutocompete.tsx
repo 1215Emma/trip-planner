@@ -4,7 +4,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
-import { ItineraryData } from "../pages/PlanningDashboard";
+import { ItineraryData } from "../../../pages/PlanningDashboard";
 
 interface AutocompleteProps {
   address: string;

@@ -1,8 +1,8 @@
 import React from "react";
 import { GoogleMap, Marker } from "@react-google-maps/api";
-import mapStyles from "../styles/mapStyles";
+import mapStyles from "../../styles/mapStyles";
 import "@reach/combobox/styles.css";
-import { ItineraryData } from "../pages/PlanningDashboard";
+import { ItineraryData } from "../../pages/PlanningDashboard";
 
 // Styling for Google Maps container
 interface MapStyleProps {

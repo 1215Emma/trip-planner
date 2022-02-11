@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import Map from "../components/Map";
-import Navigation from "../components/Navigation";
+import Map from "../src/components/Map";
+import Navigation from "../src/components/Navigation";
 import Image from "next/image";
 import Seattle from "../public/images/Seattle.jpg";
 import { BiCalendar } from "react-icons/bi";
-import GoogleAutocomplete from "../components/GoogleAutocompete";
-import PlacesList from "../components/PlacesList";
+import GoogleAutocomplete from "../src/components/GoogleAutocomplete/GoogleAutocompete";
+import { PlacesList } from "../src/components/PlacesList";
 
 interface ItineraryCoordinates {
   lat: number;

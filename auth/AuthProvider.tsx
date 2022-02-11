@@ -1,5 +1,5 @@
 import React from 'react';
-import { firebase } from '../firebase/firebase'
+import { firebase } from '../utils/firebase/firebase'
 
 // User is a type alias for the authenticated Firebase user returned by onAuthStateChanged. The callback is called with null if no user is authenticated.
 type IsLoggedIn = boolean | string;
